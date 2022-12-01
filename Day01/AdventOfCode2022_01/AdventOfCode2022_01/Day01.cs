@@ -1,6 +1,6 @@
 ﻿public class Day01
 {
-    private static string INPUT_PATH = "D:\\Studium\\Semester5\\AdventOfCode\\AdventOfCode2022\\Day01\\AdventOfCode2022_01\\AdventOfCode2022_01\\input1.txt";
+    private static string INPUT_PATH = "..\\..\\..\\input1.txt";
     private static List<int> _calorieList = new();
 
     public static void Main()
