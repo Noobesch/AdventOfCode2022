@@ -1,23 +1,19 @@
-﻿using System;
-using System.Linq;
-
-
-public class Day01
+﻿public class Day01
 {
-    private static string INPUT_PATH1 = "D:\\Studium\\Semester5\\AdventOfCode\\AdventOfCode2022\\Day01\\AdventOfCode2022_01\\AdventOfCode2022_01\\input1.txt";
-    private static string INPUT_PATH2 = "D:\\Studium\\Semester5\\AdventOfCode\\AdventOfCode2022\\Day01\\AdventOfCode2022_01\\AdventOfCode2022_01\\input2.txt";
+    private static string INPUT_PATH = "D:\\Studium\\Semester5\\AdventOfCode\\AdventOfCode2022\\Day01\\AdventOfCode2022_01\\AdventOfCode2022_01\\input1.txt";
+    private static List<int> _calorieList = new();
 
     public static void Main()
     {
         string input;
-        string[] inputLines;
-        List<int> calorieList = new List<int>();
-        using (StreamReader streamReader = new StreamReader(INPUT_PATH1))
+        
+        using (StreamReader streamReader = new StreamReader(INPUT_PATH))
         {
             input = streamReader.ReadToEnd();
         }
 
-        inputLines = input.Split("\r\n");
+        string[] inputLines = input.Split("\r\n");
+        SanityCheck(inputLines);
 
         int currentElfCalories = 0;
 
@@ -25,7 +21,7 @@ public class Day01
         {
             if(line == "")
             {
-                calorieList.Add(currentElfCalories);
+                _calorieList.Add(currentElfCalories);
                 currentElfCalories = 0;
             }
             else
@@ -34,22 +30,25 @@ public class Day01
             }
         }
 
-        calorieList.Sort();
+        _calorieList.Sort();
 
-        AnswerPart1(calorieList);
-        
-
-        SanityCheck(inputLines);
+        AnswerPart1();
+        AnswerPart2();
     }
 
     private static void SanityCheck(string[] inputLines)
     {
-        Console.WriteLine($"{inputLines.Length} lines read, first entry is {inputLines[0]}, last entry is {inputLines[inputLines.Length - 1]}");
+        Console.WriteLine($"{inputLines.Length} lines read, first entry is {inputLines[0]}, last entry is {inputLines[^2]}");
     }
 
-    private static void AnswerPart1(List<int> calorieList)
+    private static void AnswerPart1()
     {
-        Console.WriteLine($"The lowest value ist {calorieList[0]}, highest is {calorieList[calorieList.Count - 1]}");
+        Console.WriteLine($"Answer part 1: The lowest value ist {_calorieList[0]}, highest is {_calorieList[^1]}");
     }
 
+    private static void AnswerPart2()
+    {
+        long summedVal = _calorieList[^1] + _calorieList[^2] + _calorieList[^3];
+        Console.WriteLine($"Answer part 2: The highest summed value is {summedVal}");
+    }
 }
