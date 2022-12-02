@@ -54,7 +54,7 @@ public class Day02
 
 
         AnswerPart1(rounds);
-        AnswerPart2();
+        AnswerPart2(rounds);
     }
 
     private static void SanityCheck(string[] inputLines)
@@ -89,8 +89,51 @@ public class Day02
         Console.WriteLine($"Answer part 1: The score is {points}");
     }
 
-    private static void AnswerPart2()
+    private static void AnswerPart2((RockPaperScissorsState opponent, RockPaperScissorsState outcome)[] rounds)
     {
-        Console.WriteLine($"Answer part 2: ");
+        long points = 0;
+
+        //We use rock = lose, paper = draw, scissors = win
+        foreach (var round in rounds)
+        {
+            points += round.outcome switch
+            {
+                RockPaperScissorsState.Rock => 0,
+                RockPaperScissorsState.Paper => 3,
+                RockPaperScissorsState.Scissors => 6
+            };
+
+            //Case lose.
+            if (round.outcome == RockPaperScissorsState.Rock)
+            {
+                points += round.opponent switch
+                {
+                    RockPaperScissorsState.Rock => 3,
+                    RockPaperScissorsState.Paper => 1,
+                    RockPaperScissorsState.Scissors => 2
+                };
+            }
+            //Case draw
+            else if (round.outcome == RockPaperScissorsState.Paper)
+            {
+                points += round.opponent switch
+                {
+                    RockPaperScissorsState.Rock => 1,
+                    RockPaperScissorsState.Paper => 2,
+                    RockPaperScissorsState.Scissors => 3
+                };
+            }
+            //Case win
+            else
+            {
+                points += round.opponent switch
+                {
+                    RockPaperScissorsState.Rock => 2,
+                    RockPaperScissorsState.Paper => 3,
+                    RockPaperScissorsState.Scissors => 1
+                };
+            }
+        }
+        Console.WriteLine($"Answer part 2: The score is {points}");
     }
 }
