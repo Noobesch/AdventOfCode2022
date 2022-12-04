@@ -11,40 +11,60 @@ public class Day03
 
     public static void Main()
     {
-        string input;
+        long score1 = 0;
+        long score2 = 0;
 
         using (StreamReader streamReader = new StreamReader(REAL_INPUT_PATH))
         {
-            input = streamReader.ReadToEnd();
-
             while (!streamReader.EndOfStream)
             {
+                string line = streamReader.ReadLine();
+                string[] strings = line.Replace("\r\n", "").Split(new char[] { ',', '-' });
+                int[] ints = Array.ConvertAll(strings, s => int.Parse(s));
+
+                string leftString = "";
+                string rightString = "";
+                
+                for (var leftIndex = ints[0]; leftIndex <= ints[1]; leftIndex++)
+                {
+                    leftString += ","+leftIndex + ",#";
+                }
+
+                for (var rightIndex = ints[2]; rightIndex <= ints[3]; rightIndex++)
+                {
+                    rightString += ","+rightIndex + ",#";
+                }
+
+
+                if(rightString.Contains(leftString) ||
+                    leftString.Contains(rightString))
+                {
+                    score1++;
+                }
+
+                foreach (var character in leftString.Split("#"))
+                {
+                    if(rightString.Contains(character) && !string.IsNullOrEmpty(character))
+                    {
+                        score2++;
+                        break;
+                    }
+                }
             }
         }
 
-        string[] inputLines = input.Split("\r\n");
-        SanityCheck(inputLines);
+        
 
-        AnswerPart1();
-        AnswerPart2();
+        AnswerPart1(score1);
+        AnswerPart2(score2);
     }
-
-    private static void SanityCheck(string[] inputLines)
+    private static void AnswerPart1(long score)
     {
-        Console.WriteLine($"{inputLines.Length} lines read, first entry is {inputLines[0]}, last entry is {inputLines[^2]}");
-    }
-
-    private static void AnswerPart1()
-    {
-        long score = 0;
-
         Console.WriteLine($"Answer part 1: The score is {score}");
     }
 
-    private static void AnswerPart2()
+    private static void AnswerPart2(long score)
     {
-        long score = 0;
-
         Console.WriteLine($"Answer part 2: The score is {score}");
     }
 }
