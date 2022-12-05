@@ -71,9 +71,16 @@ public class Day03
 
         foreach (var givenInstruction in givenInstructions)
         {
+            List<string> moveList = new List<string>();
             for (var amountIndex = 0; amountIndex < givenInstruction.amount; amountIndex++)
             {
-                stacks[givenInstruction.to - 1].Push(stacks[givenInstruction.from - 1].Pop());
+                moveList.Add(stacks[givenInstruction.from - 1].Pop());
+            }
+
+            moveList.Reverse();
+            foreach (var item in moveList)
+            {
+                stacks[givenInstruction.to - 1].Push(item);
             }
         }
         
@@ -84,16 +91,10 @@ public class Day03
         }
 
 
-        AnswerPart1(solution);
-        //AnswerPart2(score2);
+        AnswerPart(solution);
     }
-    private static void AnswerPart1(string solution)
+    private static void AnswerPart(string solution)
     {
         Console.WriteLine($"Answer part 1: The score is {solution}");
-    }
-
-    private static void AnswerPart2(long score)
-    {
-        Console.WriteLine($"Answer part 2: The score is {score}");
     }
 }
