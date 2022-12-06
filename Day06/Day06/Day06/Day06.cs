@@ -1,13 +1,4 @@
-﻿using System.Diagnostics;
-
-public enum RockPaperScissorsState
-{
-    Rock,
-    Paper,
-    Scissors
-}
-
-public class Day02
+﻿public class Day06
 {
 
     private static string REAL_INPUT_PATH = "..\\..\\..\\realInput.txt";
