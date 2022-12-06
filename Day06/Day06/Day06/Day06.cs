@@ -16,26 +16,38 @@ public class Day02
     public static void Main()
     {
         string input;
-        char[] markerArray = new char[4];
-        long solution = -1;
+        char[] markerArray1 = new char[4];
+        char[] markerArray2 = new char[14];
+        long solution1 = -1;
+        long solution2 = -1;
         
-        using (StreamReader streamReader = new StreamReader(SAMPLE_INPUT_PATH))
+        using (StreamReader streamReader = new StreamReader(REAL_INPUT_PATH))
         {
             input = streamReader.ReadToEnd();
         }
 
         for (var charIndex = 0; charIndex < input.Length; charIndex++)
         {
-            markerArray[charIndex%4] = input[charIndex];
-            if (ArrayIsUnique(markerArray))
+            markerArray1[charIndex % markerArray1.Length] = input[charIndex];
+            if (ArrayIsUnique(markerArray1))
             {
-                solution = charIndex + 1;
+                solution1 = charIndex + 1;
                 break;
             }
         }
 
-        AnswerPart1(solution);
-        AnswerPart2();
+        AnswerPart1(solution1);
+
+        for (var charIndex = 0; charIndex < input.Length; charIndex++)
+        {
+            markerArray2[charIndex % markerArray2.Length] = input[charIndex];
+            if (ArrayIsUnique(markerArray2))
+            {
+                solution2 = charIndex + 1;
+                break;
+            }
+        }
+        AnswerPart2(solution2);
     }
 
     private static void SanityCheck(string[] inputLines)
@@ -48,14 +60,14 @@ public class Day02
         Console.WriteLine($"The first answer is {solution}");
     }
 
-    private static void AnswerPart2()
+    private static void AnswerPart2(long solution)
     {
-
+        Console.WriteLine($"The second answer is {solution}");
     }
 
     private static bool ArrayIsUnique(char[] markerArray)
     {
-        char[] localArray = new char[4];
+        char[] localArray = new char[markerArray.Length];
         Array.Copy(markerArray, localArray, markerArray.Length);
         Array.Sort(localArray);
         
