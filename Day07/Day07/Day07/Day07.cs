@@ -9,14 +9,11 @@ public class Node
     public Node Parent;
     public long Size;
     public bool IsDir;
-    public int identifier;
-    public static int ID = 0;
 
     public Node(string name)
     {
         Name = name;
         Children = new List<Node>();
-        identifier = ID++;
     }
 
 
@@ -64,6 +61,7 @@ public class Tree
 
     public void AddNode(Node node)
     {
+
         if (Root == null)
         {
             Root = node;
@@ -88,11 +86,6 @@ public class Tree
         }
 
     }
-
-    public Node FindContainedNode(string name)
-    {
-        return ContainedNodes.Find(node => node.Name == name);
-    }
 }
 
 public class Day07
@@ -112,15 +105,18 @@ public class Day07
             string line;
             while (!streamReader.EndOfStream)
             {
+
+                //Read input line.
                 line = streamReader.ReadLine().Replace("\r\n", "");
+                 
 
-                Console.WriteLine(line);
-
+                //Check for directory change
                 if (line.Contains("$ cd "))
                 {
                     string name = line.Replace("$ cd ", "");
                     tree.ChangeActiveNode(name);
                 }
+                //Check for print
                 else if (!line.Contains("$ ls"))
                 {
                     string[] information = line.Split(" ");
@@ -136,11 +132,6 @@ public class Day07
                     else
                     {
                         newNode.IsDir = true;
-                    }
-
-                    if (line == "dir pcccp")
-                    {
-
                     }
                     tree.AddNode(newNode);
                 }
