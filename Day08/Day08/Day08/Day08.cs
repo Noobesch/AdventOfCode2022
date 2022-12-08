@@ -120,11 +120,6 @@
                 long positionValue = values[currentColumnIndex, currentRowIndex];
                 long right = 0, left = 0, down = 0, up = 0;
 
-                if (currentColumnIndex == 1 && currentRowIndex == 2)
-                {
-
-                }
-
                 for (var rowIndex = currentRowIndex + 1; rowIndex < values.GetLength(1); rowIndex++)
                 {
                     right++;
