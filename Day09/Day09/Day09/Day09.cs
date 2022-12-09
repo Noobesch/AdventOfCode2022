@@ -17,8 +17,8 @@ public class Day09
         mappingDict.Add("U", (0, -1));
         mappingDict.Add("D", (0, 1));
 
-        (int width, int height) size = (5, 6);
-        (int horizontal, int vertical) startPoint = (0,4);
+        (int width, int height) size = (801, 801);
+        (int horizontal, int vertical) startPoint = (400,400);
 
         bool[,] visitedArray = new bool[size.width, size.height];
 
@@ -36,7 +36,7 @@ public class Day09
             (startPoint.horizontal,startPoint.vertical)
         };
 
-        using (StreamReader streamReader = new StreamReader(SAMPLE_INPUT_PATH))
+        using (StreamReader streamReader = new StreamReader(REAL_INPUT_PATH))
         {
             while (!streamReader.EndOfStream)
             {
@@ -88,28 +88,27 @@ public class Day09
 
                     (int horizontal, int vertical) currentTailPosition = knotArray[9];
                     visitedArray[currentTailPosition.horizontal, currentTailPosition.vertical] = true;
-
-                    for (var rowIndex = 0; rowIndex < visitedArray.GetLength(0); rowIndex++)
-                    {
-                        string outLine = "";
-                        for (var columnIndex = 0; columnIndex < visitedArray.GetLength(1); columnIndex++)
-                        {
-                            string charToAdd = ".";
-                            for(var knotIndex = 0; knotIndex < knotArray.Length; knotIndex++)
-                            {
-                               if(knotArray[knotIndex] == (columnIndex, rowIndex))
-                                {
-                                    charToAdd = knotIndex.ToString();
-                                    break;
-                                }
-                            }
-                            outLine += charToAdd;
-                        }
-                        Console.WriteLine(outLine);
-                    }
-
-                    Console.WriteLine("\n\n");
                 }
+                //for (var rowIndex = 0; rowIndex < visitedArray.GetLength(0); rowIndex++)
+                //{
+                //    string outLine = "";
+                //    for (var columnIndex = 0; columnIndex < visitedArray.GetLength(1); columnIndex++)
+                //    {
+                //        string charToAdd = ".";
+                //        for (var knotIndex = 0; knotIndex < knotArray.Length; knotIndex++)
+                //        {
+                //            if (knotArray[knotIndex] == (columnIndex, rowIndex))
+                //            {
+                //                charToAdd = knotIndex.ToString();
+                //                break;
+                //            }
+                //        }
+                //        outLine += charToAdd;
+                //    }
+                //    Console.WriteLine(outLine);
+                //}
+
+                //Console.WriteLine("\n\n");
             }
         }
 
