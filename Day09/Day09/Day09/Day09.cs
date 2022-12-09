@@ -17,74 +17,98 @@ public class Day09
         mappingDict.Add("U", (0, -1));
         mappingDict.Add("D", (0, 1));
 
-        int size = 801;
-        int center = 400;
+        (int width, int height) size = (5, 6);
+        (int horizontal, int vertical) startPoint = (0,4);
 
-        bool[,] visitedArray = new bool[size, size];
-        (int horizontal, int vertical) currentHeadPosition = (center, center);
-        (int horizontal, int vertical) currentTailPosition = (center, center);
+        bool[,] visitedArray = new bool[size.width, size.height];
 
-        using (StreamReader streamReader = new StreamReader(REAL_INPUT_PATH))
+        (int horizontal, int vertical)[] knotArray = new(int horizontal, int vertical)[]
+        {
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical),
+            (startPoint.horizontal,startPoint.vertical)
+        };
+
+        using (StreamReader streamReader = new StreamReader(SAMPLE_INPUT_PATH))
         {
             while (!streamReader.EndOfStream)
             {
-                string[] line = streamReader.ReadLine().Replace("\r\n","").Split(' ');
+                string[] line = streamReader.ReadLine().Replace("\r\n", "").Split(' ');
                 var moveInstruction = mappingDict[line[0]];
 
-                for(var moveIndex = 0; moveIndex < int.Parse(line[1]); moveIndex++)
+                for (var moveIndex = 0; moveIndex < int.Parse(line[1]); moveIndex++)
                 {
-                    currentHeadPosition = (currentHeadPosition.horizontal + moveInstruction.horizontal, 
-                        currentHeadPosition.vertical + moveInstruction.vertical);
+                    knotArray[0] = (knotArray[0].horizontal + moveInstruction.horizontal,
+                        knotArray[0].vertical + moveInstruction.vertical);
 
-                    int horizontalDif = currentHeadPosition.horizontal - currentTailPosition.horizontal;
-                    int verticalDif = currentHeadPosition.vertical - currentTailPosition.vertical;
-                 
-                    if(Math.Abs(horizontalDif) > 2 || Math.Abs(verticalDif) > 2)
+
+                    for (var knotIndex = 1; knotIndex < knotArray.Length; knotIndex++)
                     {
-                        throw new ArgumentException();
+                        if (knotIndex == 5)
+                        {
+
+                        }
+
+                        int horizontalDif = knotArray[knotIndex - 1].horizontal - knotArray[knotIndex].horizontal;
+                        int verticalDif = knotArray[knotIndex - 1].vertical - knotArray[knotIndex].vertical;
+
+                        if (Math.Abs(horizontalDif) > 2 || Math.Abs(verticalDif) > 2)
+                        {
+                            throw new ArgumentException();
+                        }
+
+                        if (Math.Abs(horizontalDif) == 2 && Math.Abs(verticalDif) == 2)
+                        {
+                            knotArray[knotIndex] = (knotArray[knotIndex].horizontal + horizontalDif / 2, knotArray[knotIndex].vertical + verticalDif / 2);
+                        }
+                        else if (Math.Abs(horizontalDif) == 2 && Math.Abs(verticalDif) == 1)
+                        {
+                            knotArray[knotIndex] = (knotArray[knotIndex].horizontal + horizontalDif / 2, knotArray[knotIndex].vertical + verticalDif);
+                        }
+                        else if (Math.Abs(verticalDif) == 2 && Math.Abs(horizontalDif) == 1)
+                        {
+                            knotArray[knotIndex] = (knotArray[knotIndex].horizontal + horizontalDif, knotArray[knotIndex].vertical + verticalDif / 2);
+                        }
+                        else if (Math.Abs(horizontalDif) == 2)
+                        {
+                            knotArray[knotIndex] = (knotArray[knotIndex].horizontal + horizontalDif / 2, knotArray[knotIndex].vertical);
+                        }
+                        else if (Math.Abs(verticalDif) == 2)
+                        {
+                            knotArray[knotIndex] = (knotArray[knotIndex].horizontal, knotArray[knotIndex].vertical + verticalDif / 2);
+                        }
                     }
 
-                    if(Math.Abs(horizontalDif) == 2 && Math.Abs(verticalDif) == 1) 
-                    {
-                        currentTailPosition = (currentTailPosition.horizontal + horizontalDif / 2, currentTailPosition.vertical + verticalDif);
-                    }
-                    else if(Math.Abs(verticalDif) == 2 && Math.Abs(horizontalDif) == 1)
-                    {
-                        currentTailPosition = (currentTailPosition.horizontal + horizontalDif, currentTailPosition.vertical + verticalDif / 2);
-                    }
-                    else if(Math.Abs(horizontalDif) == 2)
-                    {
-                        currentTailPosition = (currentTailPosition.horizontal + horizontalDif / 2, currentTailPosition.vertical);
-                    }
-                    else if(Math.Abs(verticalDif) == 2)
-                    {
-                        currentTailPosition = (currentTailPosition.horizontal, currentTailPosition.vertical + verticalDif / 2);
-                    }
-
+                    (int horizontal, int vertical) currentTailPosition = knotArray[9];
                     visitedArray[currentTailPosition.horizontal, currentTailPosition.vertical] = true;
 
-                    //for(var rowIndex = 0; rowIndex < visitedArray.GetLength(0); rowIndex++)
-                    //{
-                    //    string outLine = "";
-                    //    for (var columnIndex = 0; columnIndex < visitedArray.GetLength(1); columnIndex++)
-                    //    {
-                    //        if(currentHeadPosition == (columnIndex, rowIndex))
-                    //        {
-                    //            outLine += "H"; 
-                    //        }
-                    //        else if (currentTailPosition == (columnIndex, rowIndex))
-                    //        {
-                    //            outLine += "T";
-                    //        }
-                    //        else
-                    //        {
-                    //            outLine += ".";
-                    //        }
-                    //    }
-                    //    Console.WriteLine(outLine);
-                    //}
+                    for (var rowIndex = 0; rowIndex < visitedArray.GetLength(0); rowIndex++)
+                    {
+                        string outLine = "";
+                        for (var columnIndex = 0; columnIndex < visitedArray.GetLength(1); columnIndex++)
+                        {
+                            string charToAdd = ".";
+                            for(var knotIndex = 0; knotIndex < knotArray.Length; knotIndex++)
+                            {
+                               if(knotArray[knotIndex] == (columnIndex, rowIndex))
+                                {
+                                    charToAdd = knotIndex.ToString();
+                                    break;
+                                }
+                            }
+                            outLine += charToAdd;
+                        }
+                        Console.WriteLine(outLine);
+                    }
 
-                    //Console.WriteLine("\n\n");
+                    Console.WriteLine("\n\n");
                 }
             }
         }
@@ -94,7 +118,7 @@ public class Day09
         {
             for (var columnIndex = 0; columnIndex < visitedArray.GetLength(1); columnIndex++)
             {
-                if(visitedArray[rowIndex,columnIndex])
+                if (visitedArray[rowIndex, columnIndex])
                 {
                     score++;
                 }
