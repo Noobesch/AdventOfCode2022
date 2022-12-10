@@ -25,7 +25,7 @@ public class Node
 
     public Node FindChild(string name)
     {
-        return Children.Find(node => node.Name == name);
+        return Children.Find(node => node.Name == name) ?? this;
     }
 
 
@@ -61,7 +61,6 @@ public class Tree
 
     public void AddNode(Node node)
     {
-
         if (Root == null)
         {
             Root = node;
@@ -80,11 +79,10 @@ public class Tree
         {
             CurrentNode = CurrentNode.Parent;
         }
-        else if (CurrentNode.Name != name)
+        else
         {
             CurrentNode = CurrentNode.FindChild(name);
         }
-
     }
 }
 
@@ -140,7 +138,7 @@ public class Day07
 
 
         AnswerPart1(tree);
-        AnswerPart2();
+        AnswerPart2(tree);
     }
 
     private static void SanityCheck(string[] inputLines)
@@ -169,8 +167,30 @@ public class Day07
         Console.WriteLine($"The first answer is {sum}");
     }
 
-    private static void AnswerPart2()
+    private static void AnswerPart2(Tree tree)
     {
-        Console.WriteLine($"The second answer is ");
+
+        long totalSize = 70000000;
+        long neededSize = 30000000;
+
+        long freeSpace = totalSize - tree.Root.GetSize();
+        long spaceToFree = neededSize - freeSpace;
+
+        long smallestSpaceToFree = long.MaxValue;
+
+        foreach (var node in tree.ContainedNodes)
+        {
+            if (!node.IsDir)
+            {
+                continue;
+            }
+
+            long size = node.GetSize();
+            if (size > spaceToFree && size < smallestSpaceToFree)
+            {
+                smallestSpaceToFree = size;
+            }
+        }
+        Console.WriteLine($"The second answer is {smallestSpaceToFree}");
     }
 }
