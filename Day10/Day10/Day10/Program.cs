@@ -13,34 +13,87 @@ public class Day10
     {
         int tickCounter = 0;
         long signalCounter = 1;
-        long sum = 0;
+
+        //using (StreamReader streamReader = new StreamReader(REAL_INPUT_PATH))
+        //{
+        //while (!streamReader.EndOfStream)
+        //{
+        //    string line = streamReader.ReadLine().Replace("\r\n", "");
+
+        //    tickCounter++;
+
+        //    if (tickCounter % 40 == 20)
+        //    {
+        //        Console.WriteLine($"At {tickCounter} the signal strength is {tickCounter * signalCounter}");
+        //        sum += (tickCounter * signalCounter);
+        //    }
+
+        //    if (line.Contains("addx"))
+        //    {
+        //        tickCounter++;
+        //        if (tickCounter % 40 == 20)
+        //        {
+        //            Console.WriteLine($"At {tickCounter} the signal strength is {tickCounter * signalCounter}");
+        //            sum += (tickCounter * signalCounter);
+        //        }
+        //        signalCounter += int.Parse(line.Replace("addx ", ""));
+        //    }
+        //}
+        //}
+        //AnswerPart1(sum);
+
+
+        tickCounter = 0;
+        signalCounter = 1;
+
         using (StreamReader streamReader = new StreamReader(REAL_INPUT_PATH))
         {
+            string answerString = "";
             while (!streamReader.EndOfStream)
             {
                 string line = streamReader.ReadLine().Replace("\r\n", "");
+                
+
+                if(Math.Abs(tickCounter % 40 - signalCounter % 40) <= 1)
+                {
+                    answerString += "#";
+                }
+                else
+                {
+                    answerString += ".";
+                }
 
                 tickCounter++;
 
-                if (tickCounter % 40 == 20)
+                if (tickCounter%40 == 0)
                 {
-                    Console.WriteLine($"At {tickCounter} the signal strength is {tickCounter * signalCounter}");
-                    sum += (tickCounter * signalCounter);
+                    Console.WriteLine(answerString);
+                    answerString = "";
                 }
 
                 if (line.Contains("addx"))
                 {
-                    tickCounter++;
-                    if (tickCounter % 40 == 20)
+                    if (Math.Abs(tickCounter % 40 - signalCounter % 40) <= 1)
                     {
-                        Console.WriteLine($"At {tickCounter} the signal strength is {tickCounter * signalCounter}");
-                        sum += (tickCounter * signalCounter);
+                        answerString += "#";
                     }
+                    else
+                    {
+                        answerString += ".";
+                    }
+
+                    tickCounter++;
+
+                    if (tickCounter % 40 == 0)
+                    {
+                        Console.WriteLine(answerString);
+                        answerString = "";
+                    }
+
                     signalCounter += int.Parse(line.Replace("addx ", ""));
                 }
             }
         }
-        AnswerPart1(sum);
 
     }
     private static void AnswerPart1(long solution)
